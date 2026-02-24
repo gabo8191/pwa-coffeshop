@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order.css">
+    <meta name="theme-color" content="#db4938">
+    <title>Mis Órdenes - Cafeteria PWA</title>
+</head>
+<body>
+    <main>
+        <nav>
+            <h1>Cafeteria PWA</h1>
+        </nav>
+        <div class="order-container" style="max-width:600px;">
+            <a href="index.html" class="back-link">Volver a inicio</a>
+            <h2>Mis Órdenes Actuales</h2>
+            <div id="orders-list"></div>
+        </div>
+    </main>
+
+    <!-- Confirmación/rechazo -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p id="confirmation-message">¿Qué deseas hacer con esta orden?</p>
+            <div class="modal-actions">
+                <button id="confirm-btn" class="btn-confirm">Confirmar</button>
+                <button id="cancel-btn" class="btn-cancel">Rechazar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/apporders.js"></script>
+</body>
+</html>

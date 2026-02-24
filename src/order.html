@@ -32,6 +32,11 @@
                     </select>
                 </div>
 
+                <div class="form-group price-display">
+                    <label>Precio:</label>
+                    <span id="price-value">$0</span>
+                </div>
+
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="sugar" name="sugar">
                     <label for="sugar" style="margin-bottom: 0;">¿Deseas agregar azúcar?</label>
@@ -43,6 +48,17 @@
             <div id="order-result"></div>
         </div>
     </main>
+
+    <!-- modal de confirmación -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p id="confirmation-message">¿Deseas confirmar tu pedido?</p>
+            <div class="modal-actions">
+                <button id="confirm-btn" class="btn-confirm">Sí, confirmar</button>
+                <button id="cancel-btn" class="btn-cancel">No, cancelar</button>
+            </div>
+        </div>
+    </div>
 
     <script src="js/apporder.js"></script>
 

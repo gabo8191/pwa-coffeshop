@@ -1,41 +1,42 @@
-const container = document.querySelector(".container");
+const container = document.querySelector('.container');
 const coffees = [
   {
-    name: "Latte",
-    image: "images/coffee1.jpg"
+    name: 'Latte',
+    image: 'images/coffee1.jpg',
   },
   {
-    name: "Expresso",
-    image: "images/coffee2.jpg"
+    name: 'Expresso',
+    image: 'images/coffee2.jpg',
   },
   {
-    name: "Capuchino",
-    image: "images/coffee3.jpg"
+    name: 'Capuchino',
+    image: 'images/coffee3.jpg',
   },
   {
-    name: "Mokachino",
-    image: "images/coffee4.jpg"
+    name: 'Mokachino',
+    image: 'images/coffee4.jpg',
   },
   {
-    name: "Chocolate",
-    image: "images/coffee5.jpg"
+    name: 'Chocolate',
+    image: 'images/coffee5.jpg',
   },
   {
-    name: " Cafe con leche",
-    image: "images/coffee6.jpg"
+    name: ' Cafe con leche',
+    image: 'images/coffee6.jpg',
+  },
+
+  {
+    name: 'Capuchino con chocolate',
+    image: 'images/coffee7.jpg',
   },
   {
-    name: "Capuchino con chocolate",
-    image: "images/coffee7.jpg"
+    name: 'Tradicional',
+    image: 'images/coffee8.jpg',
   },
   {
-    name: "Tradicional",
-    image: "images/coffee8.jpg"
+    name: 'Capuchino Vienes',
+    image: 'images/coffee9.jpg',
   },
-  {
-    name: "Capuchino Vienes",
-    image: "images/coffee9.jpg"
-  }
 ];
 
 // =========================================================
@@ -43,7 +44,8 @@ const coffees = [
 // =========================================================
 const actualizarContador = () => {
   return new Promise((resolve, reject) => {
-    const misOrdenes = JSON.parse(localStorage.getItem('misOrdenesArray')) || [];
+    const misOrdenes =
+      JSON.parse(localStorage.getItem('misOrdenesArray')) || [];
     const contadorElemento = document.getElementById('counter-value');
     if (contadorElemento) {
       contadorElemento.textContent = misOrdenes.length;
@@ -61,7 +63,7 @@ const obtenerDatos = () => {
       if (coffees.length > 0) {
         resolve(coffees);
       } else {
-        reject("Error: No hay cafés disponibles en la base de datos.");
+        reject('Error: No hay cafés disponibles en la base de datos.');
       }
     }, 1000);
   });
@@ -72,7 +74,7 @@ const obtenerDatos = () => {
 // =========================================================
 const renderizarCafes = (datosCafe) => {
   return new Promise((resolve) => {
-    let output = "";
+    let output = '';
     datosCafe.forEach(({ name, image }) => {
       output += `
         <div class="card">
@@ -83,7 +85,7 @@ const renderizarCafes = (datosCafe) => {
       `;
     });
     container.innerHTML = output;
-    resolve("Los componentes HTML han sido inyectados en el contenedor.");
+    resolve('Los componentes HTML han sido inyectados en el contenedor.');
   });
 };
 
@@ -94,19 +96,24 @@ const esperarImagenes = () => {
   return new Promise((resolve) => {
     const images = document.querySelectorAll('.card--avatar');
     let loadedCount = 0;
-    if (images.length === 0) resolve("No hay imágenes para cargar.");
+    if (images.length === 0) resolve('No hay imágenes para cargar.');
     images.forEach((img) => {
       if (img.complete) {
         loadedCount++;
-        if (loadedCount === images.length) resolve("Todas las imágenes están listas.");
+        if (loadedCount === images.length)
+          resolve('Todas las imágenes están listas.');
       } else {
         img.addEventListener('load', () => {
           loadedCount++;
-          if (loadedCount === images.length) resolve("Todas las imágenes están listas.");
+          if (loadedCount === images.length)
+            resolve('Todas las imágenes están listas.');
         });
         img.addEventListener('error', () => {
           loadedCount++;
-          if (loadedCount === images.length) resolve("Las imágenes terminaron de procesarse (algunas con error).");
+          if (loadedCount === images.length)
+            resolve(
+              'Las imágenes terminaron de procesarse (algunas con error).',
+            );
         });
       }
     });
@@ -119,7 +126,7 @@ const esperarImagenes = () => {
 const capturarPrimerClick = () => {
   return new Promise((resolve) => {
     const botones = document.querySelectorAll('.card--link');
-    botones.forEach(btn => {
+    botones.forEach((btn) => {
       btn.addEventListener('click', function manejadorClick(e) {
         e.preventDefault();
         const nombreCafe = e.target.previousElementSibling.textContent.trim();
@@ -132,16 +139,17 @@ const capturarPrimerClick = () => {
 // =========================================================
 //  Encadenamiento de las Promesas
 // =========================================================
-document.addEventListener("DOMContentLoaded", () => {
-  container.innerHTML = "<h2 style='text-align:center;'>Preparando tu café...</h2>";
+document.addEventListener('DOMContentLoaded', () => {
+  container.innerHTML =
+    "<h2 style='text-align:center;'>Preparando tu café...</h2>";
 
   actualizarContador()
     .then((mensajeContador) => {
-      console.log("1. Contador ordenes actualizado");
+      console.log('1. Contador ordenes actualizado');
       return obtenerDatos();
     })
     .then((datos) => {
-      console.log("2. Datos obtenidos con éxito.");
+      console.log('2. Datos obtenidos con éxito.');
       return renderizarCafes(datos);
     })
     .then((mensajeRender) => {
@@ -150,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then((mensajeImagenes) => {
       console.log(`3. ${mensajeImagenes}`);
-      console.log("-> La interfaz está 100% lista para usarse.");
+      console.log('-> La interfaz está 100% lista para usarse.');
       // Aquí empieza a esperar que el usuario haga click
       return capturarPrimerClick();
     })
@@ -161,18 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => {
       console.error(error);
-      container.innerHTML = "<h2>Lo sentimos, ocurrió un error al cargar los cafés.</h2>";
+      container.innerHTML =
+        '<h2>Lo sentimos, ocurrió un error al cargar los cafés.</h2>';
     });
 });
 
 // =========================================================
 // Registro del Service Worker
 // =========================================================
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () {
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
     navigator.serviceWorker
-      .register("/sw.js")
-      .then(res => console.log("Service worker registrado"))
-      .catch(err => console.log("Service worker no registrado", err));
+      .register('/sw.js')
+      .then((res) => console.log('Service worker registrado'))
+      .catch((err) => console.log('Service worker no registrado', err));
   });
 }

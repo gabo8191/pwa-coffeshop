@@ -1,79 +1,111 @@
+const precios = {
+  Latte: 1000,
+  Expresso: 800,
+  Capuchino: 900,
+  Mokachino: 1100,
+  Chocolate: 1200,
+  'Cafe con leche': 950,
+  'Capuchino con chocolate': 1300,
+  Tradicional: 700,
+  'Capuchino Vienes': 1250,
+};
 
-// 1. Creamos nuestro arreglo vacío donde vivirá la información
-const misOrdenes = [];
+const multiplicadores = {
+  Pequeño: 1,
+  Mediano: 1.2,
+  Grande: 1.5,
+};
 
-// Obtenemos el nombre del café de la URL
 const urlParams = new URLSearchParams(window.location.search);
-const coffeeName = urlParams.get('coffee') || "Café Especial";
+const coffeeName = decodeURIComponent(urlParams.get('coffee'));
+
+function actualizarPrecio() {
+  const tamaño = document.getElementById('size').value;
+  const precioBase = precios[coffeeName];
+  const multiplicador = multiplicadores[tamaño];
+  const precioFinal = Math.round(precioBase * multiplicador);
+  document.getElementById('price-value').textContent = '$' + precioFinal;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('coffee-title').textContent =
+    'Personaliza tu ' + coffeeName;
+
+  actualizarPrecio();
+
+  document.getElementById('size').addEventListener('change', actualizarPrecio);
+});
 
 const guardarEnArray = (nuevaOrden) => {
-    return new Promise((resolve) => {
-        // 1. Traemos el arreglo actual (o creamos uno vacío)
-        let misOrdenes = JSON.parse(localStorage.getItem('misOrdenesArray')) || [];
+  return new Promise((resolve) => {
+    let misOrdenes = JSON.parse(localStorage.getItem('misOrdenesArray'));
+    if (misOrdenes === null) {
+      misOrdenes = [];
+    }
 
-        // 2. Insertamos la nueva orden en el arreglo
-        misOrdenes.push(nuevaOrden);
+    misOrdenes.push(nuevaOrden);
+    localStorage.setItem('misOrdenesArray', JSON.stringify(misOrdenes));
 
-        // 3. Lo guardamos para que index.html pueda leerlo
-        localStorage.setItem('misOrdenesArray', JSON.stringify(misOrdenes));
-
-        console.log("Arreglo actualizado:", misOrdenes);
-        resolve("Orden guardada exitosamente.");
-    });
+    console.log('Arreglo actualizado:', misOrdenes);
+    resolve('Orden guardada exitosamente.');
+  });
 };
 
 // =========================================================
 // Capturar el envío del formulario de la orden
 // =========================================================
 const orderForm = document.getElementById('order-form');
+const modal = document.getElementById('confirmation-modal');
+const btnConfirm = document.getElementById('confirm-btn');
+const btnCancel = document.getElementById('cancel-btn');
 
 if (orderForm) {
-    orderForm.addEventListener('submit', (e) => {
-        e.preventDefault();
+  orderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    modal.style.display = 'block';
+  });
+}
 
-        // Extraemos los datos del formulario
-        const size = document.getElementById('size').value;
-        const hasSugar = document.getElementById('sugar').checked;
+if (btnCancel) {
+  btnCancel.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+}
 
-        // Construimos el objeto de la orden
-        const nuevaOrden = {
-            id: Date.now(),
-            cafe: coffeeName,
-            tamaño: size,
-            azucar: hasSugar,
-            fecha: new Date().toLocaleString()
-        };
+if (btnConfirm) {
+  btnConfirm.addEventListener('click', () => {
+    modal.style.display = 'none';
 
-        const resultDiv = document.getElementById('order-result');
-        const btnSubmit = document.querySelector('.btn-submit');
+    const size = document.getElementById('size').value;
+    const hasSugar = document.getElementById('sugar').checked;
 
-        resultDiv.textContent = "Procesando tu orden...";
-        resultDiv.className = 'success';
-        resultDiv.style.display = 'block';
-        btnSubmit.disabled = true;
+    const nuevaOrden = {
+      id: Date.now(),
+      cafe: coffeeName,
+      tamaño: size,
+      azucar: hasSugar,
+      fecha: new Date().toLocaleString(),
+      precio: document.getElementById('price-value').textContent,
+    };
 
-        // Ejecutamos nuestra Promesa
-        guardarEnArray(nuevaOrden)
-            .then((mensaje) => {
-                // Mostramos mensaje de éxito
-                resultDiv.textContent = `¡Listo! ${mensaje}`;
+    const resultDiv = document.getElementById('order-result');
+    const btnSubmit = document.querySelector('.btn-submit');
 
-                // IMPORTANTE: Para ver el arreglo en consola, 
-                // vamos a comentar temporalmente la redirección.
-                /*
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 3000);
-                */
+    resultDiv.textContent = 'Procesando tu orden...';
+    resultDiv.className = 'success';
+    resultDiv.style.display = 'block';
+    btnSubmit.disabled = true;
 
-                // Reactivamos el botón por si quieres hacer otra orden
-                setTimeout(() => {
-                    btnSubmit.disabled = false;
-                    btnSubmit.textContent = "Hacer otro pedido igual";
-                }, 1000);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    });
+    guardarEnArray(nuevaOrden)
+      .then((mensaje) => {
+        resultDiv.textContent = `¡Listo! ${mensaje}`;
+        setTimeout(() => {
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Hacer otro pedido igual';
+        }, 1000);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
 }

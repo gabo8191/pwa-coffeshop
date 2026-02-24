@@ -42,6 +42,55 @@
                     <label for="sugar" style="margin-bottom: 0;">¿Deseas agregar azúcar?</label>
                 </div>
 
+                <!-- Sección de Método de Pago -->
+                <div class="payment-section">
+                    <h3>Método de Pago</h3>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-option">
+                            <input type="radio" id="cash" name="payment" value="efectivo" required>
+                            <label for="cash">Efectivo</label>
+                        </div>
+                        <div class="payment-option">
+                            <input type="radio" id="card" name="payment" value="tarjeta" required>
+                            <label for="card">Tarjeta de Crédito</label>
+                        </div>
+                    </div>
+
+                    <!-- Campos para Pago en Efectivo -->
+                    <div id="cash-fields" class="payment-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="cash-amount">Monto entregado:</label>
+                            <input type="number" id="cash-amount" name="cash-amount" min="0" step="50" placeholder="Ingrese el monto">
+                        </div>
+                        <div id="change-display" class="change-info" style="display: none;">
+                            <strong>Cambio a devolver: <span id="change-amount">$0</span></strong>
+                        </div>
+                    </div>
+
+                    <!-- Campos para Tarjeta de Crédito -->
+                    <div id="card-fields" class="payment-fields" style="display: none;">
+                        <div class="form-group">
+                            <label for="card-number">Número de tarjeta:</label>
+                            <input type="text" id="card-number" name="card-number" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number">
+                        </div>
+                        <div class="form-group-row">
+                            <div class="form-group half">
+                                <label for="card-expiry">Fecha de vencimiento:</label>
+                                <input type="text" id="card-expiry" name="card-expiry" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
+                            </div>
+                            <div class="form-group half">
+                                <label for="card-cvv">CVV:</label>
+                                <input type="text" id="card-cvv" name="card-cvv" placeholder="123" maxlength="4" autocomplete="cc-csc">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="card-holder">Nombre del titular:</label>
+                            <input type="text" id="card-holder" name="card-holder" placeholder="Juan Pérez" autocomplete="cc-name">
+                        </div>
+                    </div>
+                </div>
+
                 <button type="submit" class="btn-submit">Confirmar Pedido</button>
             </form>
 
@@ -56,6 +105,28 @@
             <div class="modal-actions">
                 <button id="confirm-btn" class="btn-confirm">Sí, confirmar</button>
                 <button id="cancel-btn" class="btn-cancel">No, cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de procesamiento de pago -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="payment-title">Procesando Pago</h3>
+            <p id="payment-message">Procesando su pago...</p>
+            <div id="payment-result" style="display: none;">
+                <div id="payment-success" class="payment-status success" style="display: none;">
+                    <h4>✓ ¡Pago Aprobado!</h4>
+                    <p id="success-details"></p>
+                </div>
+                <div id="payment-error" class="payment-status error" style="display: none;">
+                    <h4>✗ Pago Rechazado</h4>
+                    <p id="error-details"></p>
+                </div>
+            </div>
+            <div id="payment-buttons" style="display: none;">
+                <button id="accept-payment" class="btn-confirm">Aceptar</button>
+                <button id="retry-payment" class="btn-cancel">Intentar de Nuevo</button>
             </div>
         </div>
     </div>

@@ -27,12 +27,26 @@
   color: #333;
 }
 
-.form-group select {
+.form-group select,
+.form-group input[type="text"],
+.form-group input[type="number"] {
   width: 100%;
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #db4938;
+  box-shadow: 0 0 0 2px rgba(219, 73, 56, 0.2);
+}
+
+.form-group input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .checkbox-group {
@@ -105,9 +119,35 @@
   background: white;
   padding: 2rem;
   border-radius: 10px;
-  max-width: 300px;
-  margin: 30% auto;
+  max-width: 400px;
+  margin: 15% auto;
+  text-align: left;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#edit-modal .modal-content {
+  max-width: 450px;
+}
+
+#edit-modal h3 {
   text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+#edit-modal .form-group {
+  margin-bottom: 1.5rem;
+}
+
+#edit-modal .price-display {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+#edit-price-value {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #db4938;
 }
 
 .modal-actions {
@@ -133,4 +173,123 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Estilos para la sección de pago */
+.payment-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.payment-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  text-align: center;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.payment-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-option:hover {
+  border-color: #db4938;
+  background: #fdf2f0;
+}
+
+.payment-option input[type="radio"]:checked + label,
+.payment-option:has(input[type="radio"]:checked) {
+  border-color: #db4938;
+  background: #fdf2f0;
+}
+
+.payment-option input[type="radio"] {
+  margin: 0;
+}
+
+.payment-option label {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.payment-fields {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+}
+
+.form-group-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group.half {
+  flex: 1;
+}
+
+.change-info {
+  background: #d4edda;
+  color: #155724;
+  padding: 0.75rem;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.payment-status {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.payment-status.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.payment-status.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f1b0b7;
+}
+
+.payment-status h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.payment-status p {
+  margin: 0;
+}
+
+#payment-buttons {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+#payment-buttons .btn-confirm,
+#payment-buttons .btn-cancel {
+  margin: 0 0.5rem;
 }
